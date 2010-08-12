@@ -15,7 +15,7 @@ obj = Object.new
     unique ability to create objects
     in ruby, classes are just objects
     once created, objects can change not only state but behavior
-    aquire new methods\/behavior beyond their class
+    aquire new methods behavior beyond their class
   objects 
 /
 --------------------0
@@ -24,7 +24,6 @@ obj = Object.new
 obj = Object.new
 
 obj.methods
-obj.public_methods
 obj.protected_methods
 obj.private_methods
 obj.singleton_methods
@@ -35,7 +34,6 @@ obj.respond_to? :inspect
   methods == public_methods
   false hide inherited methods
 /
-
 --------------------0
 # Object Class reflection
 obj = Object.new
@@ -44,9 +42,6 @@ obj.class
 obj.class.ancestors
 obj.class.superclass
 obj.is_a?(Object)
-
-Object.instance_methods
-obj.class.instance_methods
 
 --------------------0
 # State is stored in instance variables
@@ -59,21 +54,6 @@ obj.instance_variables
 
 / start with a @.  like _ convention, enforced by language
   private to an object, reflection methods to query, get, set
-/
---------------------0
-# Example: printing out instance variables
-obj = Object.new
-
-obj.instance_variable_set("@dynamic", true)
-obj.instance_variable_set("@father", 'smalltalk')
-obj.instance_variable_set("@creator", 'matz')
-
-obj.instance_variables.each do |name|
-  value = obj.instance_variable_get(name)
-  puts "obj's #{name} is: #{value}"
-end
-/ generic loop through state.  
-  image saving it in a hash, storing as json in a db
 /
 --------------------0
 # Object Individuation!
@@ -191,22 +171,6 @@ end
     no way of knowing maybe later reopen again and new things added
 /
 --------------------0
-# Module as state-less method holders
-
-puts Geometry.respond_to? 'area'
-Geometry.new.area(5)
-
-module Geometry
-  module_function 'area'
-end
-
-Geometry.area(10)
-/ can't call area on Geometry 
-  can't instantiate Geometry, only classes
-  declare it as a module_function
-  not too common, this bad example, Math.sqrt
-/
---------------------0
 # Modules as mixins!
 module Loud
   def honk
@@ -216,9 +180,7 @@ end
 
 str = "George"
 str.extend(Loud)
-
-str.honk
-
+puts str.honk
 puts str.singleton_methods
 / true power of modules, mix them in to objects
   objects then gain the methods, behavior.
@@ -230,34 +192,6 @@ puts str.singleton_methods
     chain when we see them used with classes
 /
 --------------------0
-module VariableSerializer
-  def serialized_variables
-    result = {}
-    instance_variables.each do |name|
-      result[name] = instance_variable_get(name)
-    end
-    result
-  end
-end
-
-module VariableRandomizer
-  def generate_variables(count=3, name='@a')
-    count.times do
-      instance_variable_set(name, rand(100))
-      name.next!
-    end
-  end
-end
-
-obj = Object.new
-obj.extend(VariableSerializer)
-obj.extend(VariableRandomizer)
-
-obj.generate_variables(5)
-puts obj.serialized_variables
-
---------------------0
-
 class Time
   now
 end
@@ -311,12 +245,9 @@ puts ed.name
 # We typed 'name' 6 times to get a simple getter and setter
 
 class Human
-  attr_reader :age    # generate: def age()
-  attr_writer :age    # generate: def age=(age)
-  attr_accessor :eye_color, :hair_color
-  
+  attr_accessor :name, :age
   def greet
-    puts "I'm #{@name}, and I'm #{@age}."
+    puts "I'm #{@name}, and im #{@age}"
   end
 end
 
@@ -325,9 +256,112 @@ baby.age = 1
 baby.greet
 
 / accessor generates both.  all versions can take multiple
-  unlike c# generated getters\/setters, these aren't a complier
+  unlike c# generated getters setters, these aren't a complier
     hack that build a field you can never access, but are 
     actually setting instance variables in our object.
     so we could extend with our VariableSerializer
 /
+
 --------------------0
+
+module GetterAndSetter
+  def getter(name)
+    define_method(name) do
+      instance_variable_get("@#{name}")
+    end
+  end
+  
+  def setter(name)
+    define_method("#{name}=") do |value|
+      instance_variable_set("@#{name}", value)
+    end
+  end
+  
+  def getter_and_setter(name)
+    getter(name)
+    setter(name)
+  end
+end
+
+--------------------0
+# Now all we need to do is `extend` our class with this module
+# and we will get those as class methods:
+class Human
+  extend GetterAndSetter
+  getter_and_setter :height
+end
+
+bill = Human.new
+bill.height = 5
+puts bill.height
+
+--------------------0
+module SerializeState
+  def serialize_state
+    result = {}
+    instance_variables.each do |name|
+      result[name] = instance_variable_get(name)
+    end
+    result
+  end
+end
+
+class Human
+  include SerializeState
+end
+
+bill = Human.new
+bill.name = 'bill'
+bill.height = 5
+p bill.serialize_state
+--------------------0
+' -----------
+  |         |
+  |Serialize|    module
+  | State   | 
+  -----------
+      |  
+  -----------
+  |         |
+  | Human   |    class
+  |         | 
+  -----------
+      |
+  -----------
+  |         |
+  | bill    |    object
+  |         | 
+  ----------- '
+--------------------0
+class Human
+  puts "in a class body.  self is: #{self}"
+  def method
+    puts "in a method body.  self is #{self}"
+  end
+end
+Human.new.method
+--------------------0
+def Human.rule
+  puts "yeah humans"
+end
+
+Human.rule
+
+class Human
+  def self.rule!
+    puts "we rule!!"
+  end
+end
+
+Human.rule!
+p Human.singleton_methods
+--------------------0
+class Human
+  def method_missing(name, *args)
+    if name.to_s =~ /\?$/
+      puts "yes, are you #{name}"
+    else
+      super
+    end
+  end
+end

@@ -1,7 +1,10 @@
 internal_dsls.in :ruby
 
-by Mike_Frawley
-
+-------------------0
+Mike_Frawley do
+  work 'frontend developer at space150'
+  email 'frawl021' + '@gmail.com'
+end
 -------------------0
 
 overview do

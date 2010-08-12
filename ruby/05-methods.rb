@@ -8,20 +8,13 @@ p secret
   same for if
 /
 -----------------------0
-# Method with argument
-def tag(text)
-  "<div>#{text}</div>"
-end
-
-p tag("my blog")
------------------------0
-# Method with default value 
+# Method with arguments
 def tag(text, tag='div')
   "<#{tag}>#{text}</#{tag}>"
 end
 
-p tag('hi from div')
-p tag('hi from li', 'li')
+p tag('my blog')
+p tag('item 1', 'li')
 / taking two arguments
   second have a default value
   default arguments must be last
@@ -75,7 +68,7 @@ def tag(tag='div')
   "<#{tag}>#{text}</#{tag}>"
 end
 
-tag { 'im the content' }
+puts tag { 'im the content' }
 
 tag 'h1' do
   puts "in a block!"
@@ -95,10 +88,18 @@ log "Deleted row, for debugging: #{db.run_calculation}"
 log { "Deleted row, for debugging: #{db.run_calculation}" }
 
 def log(msg='') 
-  return if logging.current_level < :debug
+  return if logging.current_level < 'debug'
   msg = yield if block_given?
   logging.file.puts msg
 end
 
 / error if we call yield and no block given
 /
+-----------------------0
+# Implement a using block as a method
+
+def using(object) 
+  raise "object isnt disposable" unless object.respond_to? :dispose
+  yield object    # pass the given object to the given block
+  object.dispose  # now trash it!
+end

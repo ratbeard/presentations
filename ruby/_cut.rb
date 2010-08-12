@@ -181,3 +181,145 @@ puts Symbol.all_symbols.length
 puts Symbol.all_symbols.length
 
 
+
+--------------------0
+# Example: printing out instance variables
+obj = Object.new
+
+obj.instance_variable_set("@dynamic", true)
+obj.instance_variable_set("@father", 'smalltalk')
+obj.instance_variable_set("@creator", 'matz')
+
+obj.instance_variables.each do |name|
+  value = obj.instance_variable_get(name)
+  puts "obj's #{name} is: #{value}"
+end
+/ generic loop through state.  
+  image saving it in a hash, storing as json in a db
+/
+--------------------0
+# Module as state-less method holders
+
+puts Geometry.respond_to? 'area'
+Geometry.new.area(5)
+
+module Geometry
+  module_function 'area'
+end
+
+Geometry.area(10)
+/ can't call area on Geometry 
+  can't instantiate Geometry, only classes
+  declare it as a module_function
+  not too common, this bad example, Math.sqrt
+/
+
+--------------------0
+module VariableSerializer
+  def serialized_variables
+    result = {}
+    instance_variables.each do |name|
+      result[name] = instance_variable_get(name)
+    end
+    result
+  end
+end
+
+module VariableRandomizer
+  def generate_variables(count=3, name='@a')
+    count.times do
+      instance_variable_set(name, rand(100))
+      name.next!
+    end
+  end
+end
+
+obj = Object.new
+obj.extend(VariableSerializer)
+obj.extend(VariableRandomizer)
+
+obj.generate_variables(5)
+puts obj.serialized_variables
+
+--------------------0
+# Case statement
+
+aka 'switch statement'
+highlights 'rubys design'
+
+--------------------0
+
+def greet(thing)
+  case thing
+  when 'hi'
+    'hi back'
+  when 'hello', 'hiya', 42
+    'YO!'
+  when /\?$/
+    'Great, you?'
+  when 1999..2001
+    'y2k'
+  when Fixnum
+    thing * 2
+  else
+    thing
+  end
+end
+
+--------------------0
+
+case
+when age < 12
+  "lego"
+when age >= 12 && male?
+  "halo"
+else 
+  'ball'
+end
+
+if age < 12
+  "lego"
+elsif age >= 12 && male?
+  "halo"
+else 
+  'ball'
+end
+
+--------------------0
+
+"str"      === "str"
+String     === "str"
+/tr/       === "str"
+("a".."z") === "g"
+
+--------------------0
+
+'
+- Familiar but improved semantics.
+- Flexible syntax.
+- Underlying matching mechanism is 
+  a method (===).
+- Expressive literals (RegExp, Ranges).
+'
+
+
+--------------------0
+# Ruby basic program 4 verbose edition
+inventory = Hash.new()
+inventory['ipod'] = 12
+inventory['baseball'] = 50
+
+while true do
+  puts("Inventory: " + inventory.inspect() + ". Buy?")
+  input = gets().chomp()
+  if input == 'q'
+    break
+  end
+  if inventory.include?(input)
+    inventory[input] = inventory[input] - 1
+  end
+end
+
+/ ruby great - many small things
+  even at low procedural level, take alot of noise out of your code
+/

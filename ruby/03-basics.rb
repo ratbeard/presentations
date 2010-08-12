@@ -40,6 +40,7 @@ end
 
 --------------------0
 # Ruby basic program 3 IO and string interpolation
+
 name, ext = "what_sup", "txt"
 path = "/tmp/#{name}.#{ext}"
 content = "not much"
@@ -70,26 +71,6 @@ loop do
 end
 / break unless input.length > 2
   closure inventory
-/
---------------------0
-# Ruby basic program 4 verbose edition
-inventory = Hash.new()
-inventory['ipod'] = 12
-inventory['baseball'] = 50
-
-while true do
-  puts("Inventory: " + inventory.inspect() + ". Buy?")
-  input = gets().chomp()
-  if input == 'q'
-    break
-  end
-  if inventory.include?(input)
-    inventory[input] = inventory[input] - 1
-  end
-end
-
-/ ruby great - many small things
-  even at low procedural level, take alot of noise out of your code
 /
 --------------------0
 
