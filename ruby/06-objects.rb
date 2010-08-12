@@ -23,11 +23,11 @@ obj = Object.new
 
 obj = Object.new
 
-obj.methods
-obj.protected_methods
-obj.private_methods
-obj.singleton_methods
-obj.respond_to? :inspect
+p obj.methods
+p obj.protected_methods.length
+p obj.private_methods.length
+p obj.singleton_methods.length
+p obj.respond_to?(:inspect)
 
 
 / new object has many methods (more especially in irb)
@@ -38,10 +38,10 @@ obj.respond_to? :inspect
 # Object Class reflection
 obj = Object.new
 
-obj.class
-obj.class.ancestors
-obj.class.superclass
-obj.is_a?(Object)
+p obj.class
+p obj.class.ancestors
+p obj.class.superclass
+p obj.is_a?(Object)
 
 --------------------0
 # State is stored in instance variables
@@ -49,8 +49,8 @@ obj.is_a?(Object)
 obj = Object.new
 obj.instance_variable_defined? "@age"
 obj.instance_variable_set("@age", 12)
-obj.instance_variable_get("@age")
-obj.instance_variables
+p obj.instance_variable_get("@age")
+p obj.instance_variables
 
 / start with a @.  like _ convention, enforced by language
   private to an object, reflection methods to query, get, set
@@ -161,8 +161,11 @@ module Geometry
   puts PI
 end
 
+Geometry.area(5)
+Geometry.new.area(9)
+
 / 1st major function modules: act as namespaces
-  use double colon, c++ style refence constants
+  use double colon, c style refence constants
   notice inside module didn't need full scope constant
   important! reopening Geometry module add stuff to it
   similiar c# split class across files 
@@ -172,16 +175,10 @@ end
 /
 --------------------0
 # Modules as mixins!
-module Loud
-  def honk
-    puts "I'm #{self}.  HONK!"
-  end
-end
-
-str = "George"
-str.extend(Loud)
-puts str.honk
-puts str.singleton_methods
+obj = Object.new
+obj.extend(Geometry)
+puts obj.area(10)
+puts obj.singleton_methods
 / true power of modules, mix them in to objects
   objects then gain the methods, behavior.
   means beyond inheritance to share behavior.

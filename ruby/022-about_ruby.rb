@@ -6,6 +6,8 @@ popularized :by => 'Ruby on Rails', :in => 2005
 
 Smalltalk + Perl
 
+dynamic!
+
 --------------------0
 ruby.strengths = {
   :web       => 'rails, sinatra, rack, haml/sass, mustache',

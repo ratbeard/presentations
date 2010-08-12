@@ -1,9 +1,9 @@
 internal_dsls.in :ruby
 
--------------------0
 Mike_Frawley do
   work 'frontend developer at space150'
   email 'frawl021' + '@gmail.com'
+  slides "github/ratbeard/presentations"
 end
 -------------------0
 

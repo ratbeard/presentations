@@ -51,8 +51,8 @@ def tag(tag, *lines)
   lines.map {|text| "<#{tag}>#{text}</#{tag}>"}
 end
 
-puts tag "li", "item 1", "item 2", "3"
-puts tag "li"
+puts tag("li", "item 1", "item 2", "3")
+puts tag("li")
 / star or splat operator cooerces remeinaing arguments into array
   no arguments, get an empty array
   go back to old magic position api.  can't have an optional

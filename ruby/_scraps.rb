@@ -147,37 +147,6 @@ class A; include Singleton; end
 
 
 uses:
-
 - web applications (rails, sinatra)
-
 - driving other programs (scripting, testing)
-
 - text processing
-
-
-
-castanaut
-
-===
-
-http://github.com/joseph/castanaut/blob/master/lib/castanaut/movie.rb
-
-# castanaut screencasting automation
-# http://gadgets.inventivelabs.com.au/castanaut
-
-
-launch "Safari"
-url "http://gadgets.inventivelabs.com.au"
-ishowu_start_recording
-
-while_saying "To install it, drag it to your bookmarks bar." do
-  move to_element("a.button")
-  drag to(88, 106)
-  pause 0.5
-  hit Enter
-end
-
-while_saying "Let's try it out on delicious." do
-  url "http://del.icio.us"
-  pause 2
-end
