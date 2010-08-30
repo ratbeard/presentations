@@ -68,6 +68,7 @@ describe :type => :treats do
 end
 
 
+# Goal: parameterize lets
 class User
   attr_accessor :name, :age
   def initialize(attributes={})

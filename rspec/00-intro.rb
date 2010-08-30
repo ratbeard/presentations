@@ -1,6 +1,6 @@
 Advanced Rspec
 
-Mike Frawley
+mike.frawley@space150.com
 
 http://github.com/ratbeard/presentations/rspec
 -------------------0
@@ -10,7 +10,7 @@ Overview:
 1. matchers
 2. let / subject
 3. context
-4. extending
+4. misc
 
 -------------------0
 why rspec?
@@ -27,10 +27,3 @@ assert_equal 3, [5, 6, 7].size
 
 # actual - test - expected
 [5, 6, 7].size.should == 3
-
--------------------0
-What I aim for:
-
-- readable specs
-- avoid writing docstrings
-- avoid before

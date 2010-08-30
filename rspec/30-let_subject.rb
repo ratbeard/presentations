@@ -20,31 +20,18 @@ end
 -------------------0
 # Generates a method whose return value is memoized
 # after the first call.
-def let(name, &block)
-  define_method(name) do
-    __memoized[name] ||= instance_eval(&block)
-  end
-end
 
-# Example groups have their own __memoized table.
-# Gets cleared between examples like `before`
--------------------0
 describe "let is memoized" do
-  let(:empty_array) { puts "yo"; [] }
-  it do
-    empty_array.should be_empty
-    empty_array.should be_empty
-    empty_array.should be_empty 
-  end
-  it do
-    empty_array.should be_empty
-  end
+  let(:carl) { puts "hi guys"; 'carl' }
+  
+  it('') { carl; carl; carl }
+  it('') { carl }
 end
 -------------------0
 # Advantage over setting instance variable in `before`:
 # - only run when needed
 #
-# Use as a simple factory - `lets` at the top of specs.
+# Use as simple factories at the top of specs.
 
 describe "Array" do
   let(:empty_array)       { [] }    
@@ -54,28 +41,21 @@ describe "Array" do
   # ...
 end
 -------------------0
-# Advantage over mixing in a 'samples' module:
-# - memoize behavior for free
-# - provided by framework, less work
+# Advantage over factories:
+# - simpler
+# - complementary to factories
 
-module ArraySamples
-  def empty_array
-    @empty_array ||= []
-  end
-  
-  def one_element_array
-    @one_element_array ||= ['smap']
-  end
-end
-
-describe "Array" do
-  include ArraySamples
+describe "Pending orders" do
+  let(:monday_order)  {  
+    Factory.build(:pending_account_order, :week_day => 'monday') 
+  }
+  let(:tuesday_order) {  
+    Factory.build(:pending_account_order, :week_day => 'tuesday') 
+  }
   # ...
 end
-
 -------------------0
-# Versus both:
-# - clearer intent, less noise
+# clearer intent, less noise
 
 class Item < ActiveRecord::Base
   scope :red, where(:colour => 'red')
@@ -119,12 +99,18 @@ describe "Empty Array" do
   end
 end
 -------------------0
-# implicit subject if `describe` called with a class
+# implicit subject
 
-describe Array do
-  # subject { Array.new }
-  it { should be_empty }
-  it { should == [] }
+describe 9 do
+  it { should == 9 }
+end
+
+describe User do
+  # subject { User.new }
+  
+  it { should respond_to :email_count, :add_friend }
+  it { should belong_to(:account) }
+  it { should have_many(:posts) }
 end
 
 -------------------0
@@ -138,17 +124,15 @@ describe "Array with 1 item" do
   end
 end
 
-# Try and avoid using `subject` by keeping things implicit
+# Try and avoid calling `subject`.  Keep things implicit
 -------------------0
 # Keep implicit subject with `its`
 describe "Empty Array" do
   subject { [] }
-
-  describe "size" do
-    it { subject.size.should == 0 }
-  end
   
-  its(:size) { should == 0 }  
+  it { subject.size.should == 0 }
+
+  its(:size) { should == 0 }
 end
 -------------------0
 # `its` can take a string to chain calls

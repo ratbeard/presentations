@@ -40,11 +40,11 @@ describe "Empty Array" do
 end
 -------------------0
 # Any method ending with `?` can auto-generate a matcher.
-# Remove the `?` and prefix with `be_`, `be_a`, or `be_an`
+# Remove the `?` and prefix with `be_`, `be_a_`, or `be_an_`
 
 describe "Empty Array" do
   it { [].should_not be_nil }
-  it { [].should_not be_tainted }
+
   it do
     a = stub(:neat? => true)
     a.should be_neat

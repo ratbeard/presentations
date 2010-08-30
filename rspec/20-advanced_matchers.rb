@@ -1,3 +1,4 @@
+builtin matchers
 -------------------0
 describe "eq" do
   it "matches when actual == expected" do
@@ -11,13 +12,11 @@ describe "be_a" do
 end
 -------------------0
 describe "array.should =~ other_array" do
-  it "passes if target contains all items" do
-    [1,2,3].should =~ [1,2,3]
-  end
-
   it "passes if target contains all items out of order" do
     [1,3,2].should =~ [1,2,3]
   end
+  
+  it { [1,2].should =~ [2,3] }
 end
 -------------------0
 describe 'have' do
@@ -32,11 +31,6 @@ describe 'have' do
   it { @shirt.should have(2).colors }
   it { @shirt.should have_at_least(2).colors }
   it { @shirt.should have_at_most(2).colors }
-end
--------------------0
-describe 'have, on a collection' do
-  it { [].should have(0).items }
-  it { [].should have(:no).user_ratings }
 end
 -------------------0
 describe "raise_error" do
@@ -66,6 +60,7 @@ describe "division by 0" do
     expect { 5 / 0 }.to raise_error(ZeroDivisionError)
     expect { 5 / 0 }.to raise_error('divided by 0')
     expect { 5 / 0 }.to raise_error(/divided.*0/)
+    expect { 5 / 0 }.to raise_error(ZeroDivisionError, /divided/)
   end
 end
 -------------------0
@@ -111,6 +106,8 @@ end
 
 # http://wiki.github.com/dchelimsky/rspec/custom-matchers
 -------------------0
+# shoulda rails matchers
+
 describe User, "with shoulda macros" do
   it { should belong_to(:account) }
   it { should have_many(:posts) }
@@ -119,4 +116,4 @@ describe User, "with shoulda macros" do
   it { should_not allow_value("test").for(:email) }
 end
 
-# http://wiki.github.com/dchelimsky/rspec/custom-matchers
+# http://robots.thoughtbot.com/post/159805987/speculating-with-shoulda
