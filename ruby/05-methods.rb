@@ -82,10 +82,10 @@ end
 # Method that optionally yields to a block
 
 # Always run calculation even if won't log it, ouch:
-log "Deleted row, for debugging: #{db.run_calculation}"
+log "Deleted row: #{db.run_calculation}"
 
 # Not if its in a block:
-log { "Deleted row, for debugging: #{db.run_calculation}" }
+log { "Deleted row: #{db.run_calculation}" }
 
 def log(msg='') 
   return if logging.current_level < 'debug'

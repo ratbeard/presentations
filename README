@@ -1,21 +1,14 @@
-slides for my presentations
+Slides for my presentations.
 
-Assuming you're using textmate…
-
-Files are grouped in to topics.  
-To make a file per slide (presentation mode) run:
+Files are grouped by topic.  To make 1 file per slide (presentation mode) run:
 
   rake build
-  
   
 To open all the slides in order run:
 
   mate slides
   rake open
-  
-  
-now use 
+    
+now move through slides with:
 
-  cmd+opt+arrows        move through slides
-  
-i've got a custom bundle to copy the current line or slide to the clipboard i should post.  And setup some quicksilver hotkeys to switch between textmate and terminal!  enjoy!
+  cmd+opt+arrows
