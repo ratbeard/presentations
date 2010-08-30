@@ -2,7 +2,7 @@ Advanced Rspec
 
 mike.frawley@space150.com
 
-http://github.com/ratbeard/presentations/rspec
+http://github.com/ratbeard/presentations
 -------------------0
 Overview:
 

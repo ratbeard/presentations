@@ -1,12 +1,5 @@
 builtin matchers
 -------------------0
-describe "eq" do
-  it "matches when actual == expected" do
-    3.should == 1 + 2
-    3.should eq(1 + 2)
-  end
-end
--------------------0
 describe "be_a" do
   it { "str".should be_a(String) }
 end
