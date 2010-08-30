@@ -13,7 +13,7 @@ task :build => :clean do
     slides.each_with_index {|txt, i|
       txt.strip!
       
-      # remove notes:
+      # remove notes to self:
       if txt[-1,1] == '/'
         index = txt.chomp('/').rindex('/') 
         txt = txt[0, index]
@@ -22,7 +22,6 @@ task :build => :clean do
       path = "slides/%s-%02i.rb" % [name, i]
       File.open(path, 'w') {|f| f.puts txt }
     }
-    # break
   end
 end
 
